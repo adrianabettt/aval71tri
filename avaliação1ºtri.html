@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avaliação — 7º Ano — Pensamento Computacional</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-dark: #1a3a5c;
+    --blue-mid: #2563a8;
+    --blue-light: #dbeafe;
+    --green: #0f6e56;
+    --green-light: #d1fae5;
+    --amber: #92400e;
+    --amber-light: #fef3c7;
+    --red: #991b1b;
+    --red-light: #fee2e2;
+    --gray-200: #e2e8f0;
+    --gray-400: #94a3b8;
+    --gray-600: #475569;
+    --gray-800: #1e293b;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: #f0f4f8; color: var(--gray-800); min-height: 100vh; padding: 0 0 4rem; }
+
+  /* ── CABEÇALHO DA ESCOLA ── */
+  .school-header {
+    background: white;
+    border-bottom: 3px solid var(--blue-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .banner-escola {
+    width: 100%;
+    max-height: 120px;
+    object-fit: contain;
+    display: block;
+  }
+  .info-aula {
+    background: var(--blue-dark);
+    color: white;
+    width: 100%;
+    text-align: center;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── BARRA TÍTULO ── */
+  .exam-title-bar {
+    background: #1e3a5f;
+    color: white;
+    padding: 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .exam-title-bar h1 { font-family: 'Merriweather', serif; font-size: 17px; font-weight: 700; }
+  .exam-title-bar .meta { font-size: 12px; opacity: 0.8; margin-top: 3px; }
+  .shuffle-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px; padding: 3px 12px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.4px; margin-top: 6px;
+  }
+  .score-badge {
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 30px; padding: 8px 20px; text-align: center; min-width: 100px; flex-shrink: 0;
+  }
+  .score-badge .score-val { font-size: 26px; font-weight: 800; display: block; }
+  .score-badge .score-lbl { font-size: 10px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* ── CONTAINER ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  /* ── INSTRUÇÕES ── */
+  .instrucoes {
+    background: var(--amber-light); border-left: 4px solid #d97706;
+    border-radius: 0 10px 10px 0; padding: 12px 16px;
+    font-size: 13px; color: var(--amber); font-weight: 600; margin-bottom: 2rem;
+  }
+
+  /* ── FICHA DO ALUNO ── */
+  .student-card {
+    background: white; border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 1.5rem; margin-bottom: 2rem;
+    display: grid; grid-template-columns: 1fr 160px 160px; gap: 1rem;
+  }
+  .field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray-600); margin-bottom: 6px; }
+  .field input { width: 100%; border: 2px solid var(--gray-200); border-radius: 8px; padding: 8px 12px; font-family: 'Nunito', sans-serif; font-size: 15px; color: var(--gray-800); transition: border-color .2s; outline: none; }
+  .field input:focus { border-color: var(--blue-mid); }
+  .field input.filled { border-color: var(--green); background: #f0fdf4; }
+
+  /* ── SEÇÕES ── */
+  .section-block { margin-bottom: 2.5rem; }
+  .section-label { display: flex; align-items: center; gap: 12px; margin-bottom: 1.2rem; }
+  .section-num { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Merriweather', serif; font-size: 18px; font-weight: 700; flex-shrink: 0; }
+  .s1 .section-num { background: var(--blue-light); color: var(--blue-dark); }
+  .s2 .section-num { background: var(--green-light); color: var(--green); }
+  .s3 .section-num { background: var(--amber-light); color: var(--amber); }
+  .section-info h2 { font-size: 15px; font-weight: 800; }
+  .section-info p { font-size: 12px; color: var(--gray-600); margin-top: 2px; }
+  .section-tag { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 2px 10px; border-radius: 20px; display: inline-block; margin-bottom: 4px; }
+  .s1 .section-tag { background: var(--blue-light); color: var(--blue-dark); }
+  .s2 .section-tag { background: var(--green-light); color: var(--green); }
+  .s3 .section-tag { background: var(--amber-light); color: var(--amber); }
+
+  /* ── QUESTÃO ── */
+  .question-card { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 1rem; border-left: 4px solid var(--gray-200); transition: border-left-color .3s; }
+  .question-card.answered { border-left-color: var(--blue-mid); }
+  .question-card.correct  { border-left-color: var(--green); }
+  .question-card.wrong    { border-left-color: var(--red); }
+  .q-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: .75rem; }
+  .q-num-label  { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray-400); }
+  .q-points-label { font-size: 11px; font-weight: 700; color: var(--gray-400); }
+  .q-text { font-size: 15px; line-height: 1.7; margin-bottom: 1rem; }
+  .q-text strong { color: var(--blue-dark); }
+
+  .code-block { background: #1e293b; color: #e2e8f0; border-radius: 8px; padding: 12px 16px; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.8; margin: .75rem 0; }
+  .code-block .kw  { color: #93c5fd; }
+  .code-block .str { color: #86efac; }
+  .code-block .num { color: #fca5a5; }
+
+  /* ── OPÇÕES ── */
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option-btn { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border: 2px solid var(--gray-200); border-radius: 10px; cursor: pointer; background: white; font-family: 'Nunito', sans-serif; font-size: 14px; color: var(--gray-800); transition: all .15s; text-align: left; width: 100%; }
+  .option-btn:hover:not(:disabled) { border-color: var(--blue-mid); background: var(--blue-light); }
+  .option-btn.selected      { border-color: var(--blue-mid); background: var(--blue-light); }
+  .option-btn.correct-answer { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 700; }
+  .option-btn.wrong-answer  { border-color: var(--red); background: var(--red-light); color: var(--red); }
+  .option-btn:disabled { cursor: default; }
+  .opt-circle { width: 28px; height: 28px; min-width: 28px; border-radius: 50%; border: 2px solid var(--gray-400); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: var(--gray-400); transition: all .15s; }
+  .option-btn.selected .opt-circle       { background: var(--blue-mid); border-color: var(--blue-mid); color: white; }
+  .option-btn.correct-answer .opt-circle { background: var(--green); border-color: var(--green); color: white; }
+  .option-btn.wrong-answer .opt-circle   { background: var(--red); border-color: var(--red); color: white; }
+
+  /* ── FEEDBACK ── */
+  .feedback { margin-top: 10px; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; display: none; }
+  .feedback.show { display: block; }
+  .feedback.ok  { background: var(--green-light); color: var(--green); }
+  .feedback.nok { background: var(--red-light); color: var(--red); }
+
+  /* ── BOTÃO ENVIAR ── */
+  .submit-area { text-align: center; margin-top: 2.5rem; }
+  .submit-btn { background: var(--blue-dark); color: white; border: none; border-radius: 50px; padding: 16px 48px; font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800; cursor: pointer; letter-spacing: 0.5px; transition: all .2s; box-shadow: 0 4px 20px rgba(26,58,92,0.3); }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(26,58,92,0.35); }
+  .submit-btn:disabled { background: var(--gray-400); cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* ── RESULTADO ── */
+  .result-panel { display: none; background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 2rem; margin-top: 2rem; text-align: center; border-top: 5px solid var(--blue-dark); }
+  .result-panel.show { display: block; animation: slideUp .4s ease; }
+  @keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+  .result-score-big { font-family: 'Merriweather', serif; font-size: 64px; font-weight: 700; line-height: 1; }
+  .result-score-big.excellent { color: var(--green); }
+  .result-score-big.good      { color: var(--blue-mid); }
+  .result-score-big.poor      { color: var(--red); }
+  .result-subtitle { font-size: 14px; color: var(--gray-600); margin-top: 8px; }
+  .result-breakdown { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 1.5rem; text-align: left; }
+  .breakdown-item { padding: 12px 16px; border-radius: 10px; font-size: 13px; }
+  .breakdown-item .bi-val { font-size: 22px; font-weight: 800; }
+  .b1 { background: var(--blue-light);  color: var(--blue-dark); }
+  .b2 { background: var(--green-light); color: var(--green); }
+  .b3 { background: var(--amber-light); color: var(--amber); }
+  .result-msg { font-size: 16px; font-weight: 700; margin-top: 1.5rem; padding: 12px 20px; border-radius: 10px; }
+  .msg-excellent { background: var(--green-light); color: var(--green); }
+  .msg-good      { background: var(--blue-light);  color: var(--blue-dark); }
+  .msg-poor      { background: var(--red-light);   color: var(--red); }
+
+  .print-btn { background: white; color: var(--blue-dark); border: 2px solid var(--blue-dark); border-radius: 50px; padding: 10px 28px; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 1.5rem; transition: all .2s; }
+  .print-btn:hover { background: var(--blue-dark); color: white; }
+
+  @media (max-width: 600px) {
+    .student-card { grid-template-columns: 1fr; }
+    .result-breakdown { grid-template-columns: 1fr; }
+    .exam-title-bar { flex-direction: column; align-items: flex-start; }
+  }
+  @media print {
+    body { background: white; }
+    .submit-area, .print-btn, .new-exam-btn { display: none; }
+    .question-card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── CABEÇALHO DA ESCOLA ── -->
+<div class="school-header">
+  <img
+    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdOXX4HMzQRy4QVtWDORbgb9A7mmha2jxd0Q&s"
+    alt="Cabeçalho Oficial São Lourenço do Oeste"
+    class="banner-escola">
+  <div class="info-aula">
+    <strong>Escola Básica Municipal São Lourenço</strong> &nbsp;|&nbsp;
+    Profª Adriana Bett Terebinto &nbsp;|&nbsp; 2026
+  </div>
+</div>
+
+<!-- ── BARRA TÍTULO ── -->
+<div class="exam-title-bar">
+  <div>
+    <h1>Avaliação — Pensamento Computacional</h1>
+    <p class="meta">7º Ano &nbsp;·&nbsp; HABILIDADES: EF07CO01 · EF07CO02 · EF07CO03 &nbsp;·&nbsp; 10 questões &nbsp;·&nbsp; Valor: 10,0 pontos</p>
+  </div>
+  <div class="score-badge">
+    <span class="score-val" id="live-score">—</span>
+    <span class="score-lbl">pontos</span>
+  </div>
+</div>
+
+<!-- ── CONTEÚDO PRINCIPAL ── -->
+<div class="container">
+
+  <div class="instrucoes">
+    📋 <strong>Instruções:</strong> Preencha seus dados corretamente, leia cada questão com atenção e clique na alternativa correta. Ao finalizar, clique em <strong>"Enviar Avaliação"</strong>. Atenção: após clicar em uma alternativa ela fica bloqueada e não pode ser alterada.
+  </div>
+
+  <!-- FICHA DO ALUNO -->
+  <div class="student-card">
+    <div class="field">
+      <label>Nome completo</label>
+      <input type="text" id="student-name" placeholder="Digite seu nome completo" oninput="checkField(this)">
+    </div>
+    <div class="field">
+      <label>Turma</label>
+      <input type="text" id="student-turma" placeholder="Ex: 7ºA" oninput="checkField(this)">
+    </div>
+    <div class="field">
+      <label>Data</label>
+      <input type="date" id="student-date" oninput="checkField(this)">
+    </div>
+  </div>
+
+  <!-- QUESTÕES GERADAS DINAMICAMENTE -->
+  <div id="exam-body"></div>
+
+  <div class="submit-area">
+    <button class="submit-btn" id="submit-btn" onclick="submitExam()">✓ Enviar Avaliação</button>
+  </div>
+
+  <!-- PAINEL DE RESULTADO -->
+  <div class="result-panel" id="result-panel">
+    <p style="font-size:13px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Resultado final</p>
+    <div class="result-score-big" id="result-score">0,0</div>
+    <p class="result-subtitle" id="result-subtitle"></p>
+    <div class="result-breakdown">
+      <div class="breakdown-item b1"><div class="bi-val" id="b1-score">—</div><div>EF07CO01<br>Variáveis e algoritmos</div></div>
+      <div class="breakdown-item b2"><div class="bi-val" id="b2-score">—</div><div>EF07CO02<br>Bugs e depuração</div></div>
+      <div class="breakdown-item b3"><div class="bi-val" id="b3-score">—</div><div>EF07CO03<br>Refinar e validar</div></div>
+    </div>
+    <div class="result-msg" id="result-msg"></div>
+    <br>
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimir resultado</button>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ═══════════════════════════════════════════════════
+// BANCO DE 20 QUESTÕES
+// correct: índice 0-based da alternativa correta
+//          no array original (antes de embaralhar)
+// ═══════════════════════════════════════════════════
+const QUESTION_BANK = [
+
+  // ─── EF07CO01 — 8 questões ───
+  {
+    id:1, section:1,
+    text:'Uma <strong>variável simples</strong> guarda um único valor por vez, como uma gaveta com espaço para um objeto. Qual alternativa representa o uso correto de uma variável simples?',
+    options:[
+      'Armazenar as notas de 30 alunos de uma turma inteira.',
+      'Guardar apenas a nota de um único aluno: <code>nota = 9.5</code>',
+      'Agrupar nome, idade e turma de um aluno em um único conjunto.',
+      'Listar todas as matérias cursadas em um semestre.'
+    ],
+    correct:1
+  },
+  {
+    id:2, section:1,
+    text:'Uma <strong>Matriz Unidimensional (Vetor)</strong> funciona como uma estante numerada onde cada gaveta guarda um dado do mesmo tipo. Considere: <code>frutas = ["maçã", "banana", "uva", "pera"]</code> com índices começando em <strong>0</strong>. Qual fruta está no índice <strong>2</strong>?',
+    options:['maçã','banana','uva','pera'],
+    correct:2
+  },
+  {
+    id:3, section:1,
+    text:'Um <strong>Registro (Objeto)</strong> é um pacote que agrupa informações <em>diferentes</em> sobre a mesma coisa. Qual alternativa representa corretamente um Registro de aluno?',
+    options:[
+      '<code>aluno = ["Maria", 13, "7ºA"]</code>',
+      '<code>nota = 8.5</code>',
+      '<code>aluno = { nome: "Maria", idade: 13, turma: "7ºA" }</code>',
+      '<code>turma = ["Maria", "João", "Pedro"]</code>'
+    ],
+    correct:2
+  },
+  {
+    id:4, section:1,
+    text:'Leia o <strong>algoritmo</strong> abaixo. Qual será o valor exibido ao final?<div class="code-block">numero = <span class="num">10</span><br>resultado = numero * <span class="num">2</span><br><span class="kw">exibir</span>(resultado)</div>',
+    options:['10','2','20','102'],
+    correct:2
+  },
+  {
+    id:5, section:1,
+    text:'O <strong>índice</strong> de um vetor indica a posição de um elemento. Em que índice está o valor <strong>"uva"</strong> no vetor abaixo?<div class="code-block">frutas = [<span class="str">"maçã"</span>, <span class="str">"banana"</span>, <span class="str">"uva"</span>, <span class="str">"pera"</span>]</div>',
+    options:['0','1','2','3'],
+    correct:2
+  },
+  {
+    id:6, section:1,
+    text:'<strong>Automatização</strong> significa criar instruções para que o computador faça uma tarefa sozinho e rapidamente. Qual situação melhor descreve a automatização?',
+    options:[
+      'Um aluno calcula manualmente a média de 30 notas usando calculadora.',
+      'Um programa verifica automaticamente se todas as notas foram lançadas e calcula as médias sem intervenção humana.',
+      'Um professor corrige as provas folha por folha.',
+      'Um aluno digita um dado de cada vez no computador.'
+    ],
+    correct:1
+  },
+  {
+    id:7, section:1,
+    text:'Qual das opções abaixo é um exemplo de <strong>Registro (Objeto)</strong> representando um produto de uma loja?',
+    options:[
+      '<code>precos = [10, 20, 30, 40]</code>',
+      '<code>produto = { nome: "Caneta", preco: 2.50, estoque: 100 }</code>',
+      '<code>nome = "Caneta"</code>',
+      '<code>produtos = ["Caneta", "Lápis", "Borracha"]</code>'
+    ],
+    correct:1
+  },
+  {
+    id:8, section:1,
+    text:'Veja o algoritmo abaixo. Qual será o resultado exibido?<div class="code-block">numeros = [<span class="num">5</span>, <span class="num">10</span>, <span class="num">15</span>, <span class="num">20</span>]<br><span class="kw">exibir</span>(numeros[<span class="num">3</span>])</div>',
+    options:['5','10','15','20'],
+    correct:3
+  },
+
+  // ─── EF07CO02 — 6 questões ───
+  {
+    id:9, section:2,
+    text:'Maria programou um robô para <strong>somar</strong> dois números, mas ele está <strong>subtraindo</strong>. O programa não trava nem exibe mensagens de erro. Que tipo de bug é esse?',
+    options:[
+      'Erro de Sintaxe — erro de "português" no código.',
+      'Erro de Lógica — o programa funciona, mas dá resultado errado.',
+      'Erro de Execução — o programa quebra ou trava ao rodar.',
+      'Não existe erro nenhum nesse caso.'
+    ],
+    correct:1
+  },
+  {
+    id:10, section:2,
+    text:'Observe o código abaixo. Um parêntese de fechamento está faltando. Que tipo de erro está presente?<div class="code-block"><span class="kw">se</span> (x &gt; 10 {<br>&nbsp;&nbsp;<span class="kw">exibir</span>(<span class="str">"maior que 10"</span>)<br>}</div>',
+    options:[
+      'Erro de Lógica, pois a condição compara de forma incorreta.',
+      'Erro de Sintaxe, pois falta um parêntese de fechamento.',
+      'Erro de Execução, pois o programa vai travar somente ao rodar.',
+      'Não há nenhum erro no código.'
+    ],
+    correct:1
+  },
+  {
+    id:11, section:2,
+    text:'<strong>Depurar (Debug)</strong> significa procurar, analisar e corrigir erros em um programa. Qual alternativa descreve um exemplo real de depuração?',
+    options:[
+      'Escrever o código de um programa do zero sem nenhum teste.',
+      'Executar o programa sem fazer nenhuma alteração.',
+      'Verificar o código linha por linha para encontrar onde o cálculo está errado e corrigi-lo.',
+      'Criar uma interface visual bonita antes de testar o programa.'
+    ],
+    correct:2
+  },
+  {
+    id:12, section:2,
+    text:'Um programa de jogo funciona normalmente, mas quando o jogador digita um número muito grande ele trava e fecha. Que tipo de erro é esse?',
+    options:[
+      'Erro de Sintaxe.',
+      'Erro de Lógica.',
+      'Erro de Execução.',
+      'Não é um erro — é comportamento normal.'
+    ],
+    correct:2
+  },
+  {
+    id:13, section:2,
+    text:'João tentou rodar seu programa, mas recebeu a mensagem: <em>"Erro: esqueceu de fechar aspas na linha 3"</em>. Que tipo de erro ele cometeu?',
+    options:[
+      'Erro de Execução, pois o programa travou.',
+      'Erro de Lógica, pois o resultado será incorreto.',
+      'Erro de Sintaxe, pois a escrita do código está incorreta.',
+      'Não é um erro.'
+    ],
+    correct:2
+  },
+  {
+    id:14, section:2,
+    text:'Um programa deveria exibir <strong>"Aprovado"</strong> para notas acima de 7, mas exibe para notas acima de 6. O código roda sem travar. Que tipo de erro está presente?',
+    options:[
+      'Erro de Sintaxe — falta um símbolo no código.',
+      'Erro de Lógica — o critério da condição está errado.',
+      'Erro de Execução — o programa quebrou ao rodar.',
+      'Não há erro, pois o programa rodou.'
+    ],
+    correct:1
+  },
+
+  // ─── EF07CO03 — 6 questões ───
+  {
+    id:15, section:3,
+    text:'Pedro criou um jogo que funciona, mas as cores são feias e as mensagens são confusas. Ele melhora o visual e as mensagens antes de apresentar. Esse processo chama-se:',
+    options:['Depuração (Debug)','Validação','Refinamento','Automatização'],
+    correct:2
+  },
+  {
+    id:16, section:3,
+    text:'<strong>Validar</strong> um programa significa testá-lo várias vezes com dados diferentes. Qual alternativa representa uma boa prática de validação de uma calculadora?',
+    options:[
+      'Rodar o programa uma única vez com números corretos e considerá-lo pronto.',
+      'Testar com números negativos, zero e valores muito grandes para ver se o programa se comporta corretamente.',
+      'Mostrar o programa apenas ao professor sem testá-lo antes.',
+      'Apagar tudo e começar novamente se aparecer qualquer erro.'
+    ],
+    correct:1
+  },
+  {
+    id:17, section:3,
+    text:'Ana e Bruno estão construindo juntos um site sobre o bairro deles. Ana cuida do HTML e Bruno do texto. Esse tipo de trabalho é chamado de:',
+    options:[
+      'Automatização individual.',
+      'Depuração colaborativa.',
+      'Desenvolvimento colaborativo, onde cada um contribui com sua habilidade.',
+      'Validação em dupla.'
+    ],
+    correct:2
+  },
+  {
+    id:18, section:3,
+    text:'Um programa de cadastro funciona bem com nomes curtos, mas trava quando o usuário digita um nome muito longo. O que o programador deve fazer?',
+    options:[
+      'Ignorar o problema, pois raramente acontece.',
+      'Refinar o programa adicionando um limite de caracteres e uma mensagem de aviso.',
+      'Apagar o programa e criar outro do zero.',
+      'Entregar o programa assim mesmo sem testar.'
+    ],
+    correct:1
+  },
+  {
+    id:19, section:3,
+    text:'Após o primeiro teste de um jogo, os alunos perceberam que ele fica muito rápido no nível 3, impossibilitando passar de fase. O que eles devem fazer?',
+    options:[
+      'Validar o jogo testando apenas o nível 1.',
+      'Refinar o jogo ajustando a velocidade do nível 3 para que fique equilibrado.',
+      'Depurar procurando erros de sintaxe no código.',
+      'Entregar o projeto sem fazer alterações.'
+    ],
+    correct:1
+  },
+  {
+    id:20, section:3,
+    text:'Qual é a ordem correta das etapas para construir uma boa solução computacional?',
+    options:[
+      'Validar → Criar o programa → Refinar → Depurar.',
+      'Criar o programa → Depurar os erros → Refinar → Validar com testes variados.',
+      'Depurar → Validar → Criar o programa → Refinar.',
+      'Refinar → Criar o programa → Depurar → Validar.'
+    ],
+    correct:1
+  }
+];
+
+// ── UTILITÁRIOS ──────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function pickN(arr, n) { return shuffle(arr).slice(0, n); }
+
+// ── ESTADO GLOBAL ────────────────────────────────────
+let selectedQuestions = [];
+let userAnswers       = {};
+let shuffledOptions   = {};
+let submitted         = false;
+
+// ── MONTAR AVALIAÇÃO ─────────────────────────────────
+function buildExam() {
+  const pools  = [1,2,3].map(s => QUESTION_BANK.filter(q => q.section === s));
+  const counts = [4, 3, 3];
+  const picked = [];
+  pools.forEach((pool, i) => picked.push(...pickN(pool, Math.min(counts[i], pool.length))));
+  selectedQuestions = picked;
+
+  selectedQuestions.forEach((q, qi) => {
+    shuffledOptions[qi] = shuffle(q.options.map((_, i) => i));
+  });
+
+  renderExam();
+}
+
+const SECTION_META = {
+  1: { label:'EF07CO01', title:'Variáveis, vetores, registros e algoritmos', cls:'s1', num:'1' },
+  2: { label:'EF07CO02', title:'Bugs, depuração e tipos de erros',            cls:'s2', num:'2' },
+  3: { label:'EF07CO03', title:'Refinar, validar e construir soluções',        cls:'s3', num:'3' }
+};
+
+function renderExam() {
+  const container = document.getElementById('exam-body');
+  container.innerHTML = '';
+
+  const sections = {};
+  selectedQuestions.forEach((q, qi) => {
+    if (!sections[q.section]) sections[q.section] = [];
+    sections[q.section].push({ q, qi });
+  });
+
+  let num = 1;
+  [1,2,3].forEach(sNum => {
+    if (!sections[sNum]) return;
+    const meta  = SECTION_META[sNum];
+    const items = sections[sNum];
+    const start = num;
+    const end   = num + items.length - 1;
+
+    const secDiv = document.createElement('div');
+    secDiv.className = `section-block ${meta.cls}`;
+    secDiv.innerHTML = `
+      <div class="section-label">
+        <div class="section-num">${meta.num}</div>
+        <div class="section-info">
+          <div class="section-tag">${meta.label}</div>
+          <h2>${meta.title}</h2>
+          <p>Questões ${start} a ${end} — 1,0 ponto cada</p>
+        </div>
+      </div>`;
+
+    items.forEach(({ q, qi }) => {
+      secDiv.appendChild(buildCard(q, qi, num));
+      num++;
+    });
+    container.appendChild(secDiv);
+  });
+}
+
+function buildCard(q, qi, num) {
+  const card = document.createElement('div');
+  card.className = 'question-card';
+  card.id = `qcard-${qi}`;
+
+  const letters = ['A','B','C','D'];
+  const order   = shuffledOptions[qi];
+  let optHTML   = '';
+  order.forEach((origIdx, newPos) => {
+    optHTML += `
+      <button class="option-btn" id="opt-${qi}-${newPos}" onclick="selectOpt(${qi},${newPos},${origIdx})">
+        <span class="opt-circle">${letters[newPos]}</span>
+        <span>${q.options[origIdx]}</span>
+      </button>`;
+  });
+
+  card.innerHTML = `
+    <div class="q-header">
+      <span class="q-num-label">Questão ${String(num).padStart(2,'0')}</span>
+      <span class="q-points-label">1,0 pt</span>
+    </div>
+    <p class="q-text">${q.text}</p>
+    <div class="options">${optHTML}</div>
+    <div class="feedback" id="fb-${qi}"></div>`;
+  return card;
+}
+
+// ── SELEÇÃO (permite trocar até enviar) ──────────────
+function selectOpt(qi, newPos, origIdx) {
+  if (submitted) return;
+
+  userAnswers[qi] = { newPos, origIdx };
+
+  shuffledOptions[qi].forEach((_, np) => {
+    const btn = document.getElementById(`opt-${qi}-${np}`);
+    if (!btn) return;
+    btn.classList.toggle('selected', np === newPos);
+  });
+  document.getElementById(`qcard-${qi}`).classList.add('answered');
+  updateLiveScore();
+}
+
+function updateLiveScore() {
+  let score = 0;
+  selectedQuestions.forEach((q, qi) => {
+    if (userAnswers[qi] && userAnswers[qi].origIdx === q.correct) score++;
+  });
+  document.getElementById('live-score').textContent = score > 0 ? score.toFixed(1) : '—';
+}
+
+function checkField(el) {
+  el.classList.toggle('filled', el.value.trim() !== '');
+}
+
+// ── ENVIO ────────────────────────────────────────────
+function submitExam() {
+  const name  = document.getElementById('student-name').value.trim();
+  const turma = document.getElementById('student-turma').value.trim();
+  const date  = document.getElementById('student-date').value;
+  if (!name || !turma || !date) {
+    alert('Por favor, preencha seu nome completo, turma e data antes de enviar.');
+    return;
+  }
+
+  submitted = true;
+  document.getElementById('submit-btn').disabled = true;
+
+  const sectionScore = {1:0, 2:0, 3:0};
+  const sectionTotal = {1:0, 2:0, 3:0};
+  const letters = ['A','B','C','D'];
+  let total = 0;
+
+  selectedQuestions.forEach((q, qi) => {
+    sectionTotal[q.section]++;
+    const card  = document.getElementById(`qcard-${qi}`);
+    const fb    = document.getElementById(`fb-${qi}`);
+    const order = shuffledOptions[qi];
+
+    // Garantir que todos os botões estejam desabilitados
+    order.forEach((_, np) => {
+      const btn = document.getElementById(`opt-${qi}-${np}`);
+      if (btn) btn.disabled = true;
+    });
+
+    const chosen       = userAnswers[qi];
+    const isRight      = chosen && chosen.origIdx === q.correct;
+    const correctNewPos = order.indexOf(q.correct);
+
+    if (isRight) {
+      total++;
+      sectionScore[q.section]++;
+      card.classList.remove('answered'); card.classList.add('correct');
+      document.getElementById(`opt-${qi}-${correctNewPos}`)?.classList.add('correct-answer');
+      fb.textContent = '✓ Correto!';
+      fb.className = 'feedback ok show';
+    } else {
+      card.classList.remove('answered'); card.classList.add('wrong');
+      document.getElementById(`opt-${qi}-${correctNewPos}`)?.classList.add('correct-answer');
+      if (chosen) document.getElementById(`opt-${qi}-${chosen.newPos}`)?.classList.add('wrong-answer');
+      fb.textContent = `✗ Resposta incorreta. A alternativa correta é: ${letters[correctNewPos]}`;
+      fb.className = 'feedback nok show';
+    }
+  });
+
+  // Resultado
+  const scoreEl = document.getElementById('result-score');
+  const msgEl   = document.getElementById('result-msg');
+
+  scoreEl.textContent = total.toFixed(1);
+  document.getElementById('live-score').textContent = total.toFixed(1);
+
+  if (total >= 8) {
+    scoreEl.className = 'result-score-big excellent';
+    msgEl.textContent = '🎉 Excelente! Você demonstrou ótimo domínio do conteúdo!';
+    msgEl.className   = 'result-msg msg-excellent';
+  } else if (total >= 6) {
+    scoreEl.className = 'result-score-big good';
+    msgEl.textContent = '👍 Bom trabalho! Revise os conceitos em que errou para consolidar seu aprendizado.';
+    msgEl.className   = 'result-msg msg-good';
+  } else {
+    scoreEl.className = 'result-score-big poor';
+    msgEl.textContent = '📖 Precisa estudar mais! Revise o conteúdo com atenção e tente novamente.';
+    msgEl.className   = 'result-msg msg-poor';
+  }
+
+  document.getElementById('result-subtitle').textContent =
+    `${name} — Turma: ${turma} — ${total} de 10 acertos`;
+  document.getElementById('b1-score').textContent = `${sectionScore[1]}/${sectionTotal[1]}`;
+  document.getElementById('b2-score').textContent = `${sectionScore[2]}/${sectionTotal[2]}`;
+  document.getElementById('b3-score').textContent = `${sectionScore[3]}/${sectionTotal[3]}`;
+
+  const panel = document.getElementById('result-panel');
+  panel.classList.add('show');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Salvar no Firestore
+  const respostasPorQuestao = selectedQuestions.map((q, qi) => {
+    const chosen = userAnswers[qi];
+    const order  = shuffledOptions[qi];
+    const correctNewPos = order.indexOf(q.correct);
+    const letters = ['A','B','C','D'];
+    return {
+      questaoId:       q.id,
+      enunciado:       q.text.replace(/<[^>]+>/g,'').substring(0,80),
+      respostaAluno:   chosen ? letters[chosen.newPos] : 'Não respondida',
+      respostaCorreta: letters[correctNewPos],
+      acertou:         chosen ? chosen.origIdx === q.correct : false,
+      secao:           q.section
+    };
+  });
+
+  if (typeof window.saveResultToFirestore === 'function') {
+    window.saveResultToFirestore({
+      nome:         name,
+      turma:        turma,
+      data:         date,
+      nota:         total,
+      secao1:       sectionScore[1] + '/' + sectionTotal[1],
+      secao2:       sectionScore[2] + '/' + sectionTotal[2],
+      secao3:       sectionScore[3] + '/' + sectionTotal[3],
+      respostas:    respostasPorQuestao
+    });
+  }
+}
+
+// ── INICIAR ───────────────────────────────────────────
+buildExam();
+</script>
+
+<!-- ══════════════════════════════════════════════════
+     FIREBASE — cole suas credenciais aqui
+     ══════════════════════════════════════════════════ -->
+<script type="module">
+  import { initializeApp }           from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+  import { getFirestore, collection,
+           addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+  // ▼▼▼ SUBSTITUA pelos seus dados do Firebase ▼▼▼
+  const firebaseConfig = {
+    apiKey:            "AIzaSyCwPbjv1-5bEN95LJemXk8NmrlU771HB14",
+    authDomain:        "avaliacao7ano1trimestre.firebaseapp.com",
+    projectId:         "avaliacao7ano1trimestre",
+    storageBucket:     "avaliacao7ano1trimestre.firebasestorage.app",
+    messagingSenderId: "423134163406",
+    appId:             "1:423134163406:web:98c45eb674781ff1783b9f",
+    measurementId:     "G-LV3X5HS1QH"
+  };
+  // ▲▲▲ até aqui ▲▲▲
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+
+  window.saveResultToFirestore = async function(data) {
+    try {
+      await addDoc(collection(db, "resultados"), {
+        ...data,
+        timestamp: serverTimestamp()
+      });
+      console.log("Resultado salvo no Firestore com sucesso.");
+    } catch (e) {
+      console.error("Erro ao salvar no Firestore:", e);
+    }
+  };
+</script>
+</body>
+</html>
